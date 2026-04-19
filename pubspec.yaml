@@ -30,6 +30,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  # Para llamadas HTTP (como tu HttpClient en Angular)
+  dio: ^5.4.1
+  
+  # Para Inyección de Dependencias (como tu IUnitOfWork)
+  get_it: ^7.6.7
+  
+  # Para manejar el Estado (El corazón de la App)
+  flutter_bloc: ^8.1.5
+  
+  # Para Programación Funcional (Manejar el Result<T> que usas en el Backend)
+  dartz: ^0.10.1
+  
+  # Para inmutabilidad (evita errores al comparar objetos)
+  equatable: ^2.0.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
