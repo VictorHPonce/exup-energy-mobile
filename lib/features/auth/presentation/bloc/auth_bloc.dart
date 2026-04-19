@@ -7,18 +7,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUseCase loginUseCase;
 
   AuthBloc({required this.loginUseCase}) : super(AuthInitial()) {
-    // Cuando recibimos el evento de Login...
-    on<LoginSubmittedEvent>((event, emit) async {
-      emit(AuthLoading()); // 1. Decimos a la UI que estamos cargando
+    // Escuchar el evento de login
+    on<LoginSubmittedEvent>(_onLoginSubmitted);
+  }
 
-      // 2. Llamamos al caso de uso (nuestro Result de .NET)
-      final result = await loginUseCase(event.email, event.password);
+  Future<void> _onLoginSubmitted(
+    LoginSubmittedEvent event, 
+    Emitter<AuthState> emit
+  ) async {
+    emit(AuthLoading());
+    
+    final result = await loginUseCase(event.email, event.password);
 
-      // 3. Manejamos el resultado (Either Left/Failure o Right/Success)
-      result.fold(
-        (failure) => emit(AuthError(failure.message)),
-        (user) => emit(AuthSuccess(user)),
-      );
-    });
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (user) => emit(AuthSuccess(user)),
+    );
   }
 }

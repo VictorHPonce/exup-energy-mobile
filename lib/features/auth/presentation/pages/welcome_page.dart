@@ -1,73 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+// Importamos nuestros Átomos y Moléculas
+import '../../../../core/widgets/atoms/brand_text.dart';
+import '../../../../core/widgets/atoms/primary_button.dart';
+
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack( // Para poner contenido sobre un fondo si quieres
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // 1. Logo (Usa un Icono temporalmente si no tienes imagen)
-                const Icon(Icons.bolt, size: 100, color: Colors.blueAccent),
-                const SizedBox(height: 20),
-                const Text(
-                  'ExUp Energy',
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+      backgroundColor: Colors.white,
+      body: SafeArea( // Importante para no chocar con el notch del móvil
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            children: [
+              const Spacer(flex: 2), // Espacio flexible para empujar el logo
+              
+              // Átomo: Icono (En el futuro será tu Logo en imagen)
+              const Icon(
+                Icons.bolt_rounded, 
+                size: 100, 
+                color: Colors.blueAccent
+              ),
+              
+              const SizedBox(height: 24),
+              
+              // Átomo: Texto de Marca (Header)
+              const BrandText.header('ExUp Energy'),
+              
+              const SizedBox(height: 12),
+              
+              // Átomo: Texto de Marca (Body)
+              const BrandText.body(
+                'Encuentra la mejor energía para tu camino',
+                textAlign: TextAlign.center,
+              ),
+              
+              const Spacer(flex: 3), // Más espacio en el centro para balance visual
+              
+              // Átomo: Botón Primario (Acción Principal)
+              PrimaryButton(
+                text: 'Iniciar Sesión',
+                onPressed: () => context.push('/login'),
+              ),
+              
+              const SizedBox(height: 16),
+              
+              // Molécula: Botón de texto simple (Acción Secundaria)
+              TextButton(
+                onPressed: () { /* Navegación directa al mapa */ },
+                child: const Text(
+                  'Explorar sin cuenta',
+                  style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Encuentra la mejor energía para tu camino',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
-                ),
-                const SizedBox(height: 60),
+              ),
+              
+              const Spacer(), // Empuja el footer al final
+              
+              // Molécula: Footer de registro
+              _buildFooter(context),
+              
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-                // 2. Botón Iniciar Sesión (Acción Principal)
-                SizedBox(
-                  width: double.infinity,
-                  height: 55,
-                  child: ElevatedButton(
-                    onPressed: () => context.push('/login'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: const Text('Iniciar Sesión'),
-                  ),
-                ),
-                const SizedBox(height: 15),
-
-                // 3. Botón Explorar (Acción Secundaria)
-                TextButton(
-                  onPressed: () { /* Navegar al mapa directamente */ },
-                  child: const Text('Explorar sin cuenta'),
-                ),
-                const Spacer(), // Empuja el resto hacia abajo
-
-                // 4. Pie de página: ¿Eres nuevo?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('¿Eres nuevo?'),
-                    TextButton(
-                      onPressed: () => context.push('/register'),
-                      child: const Text('Crea una cuenta aquí'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-              ],
+  // Molécula interna: Solo se usa aquí, no necesita archivo aparte por ahora
+  Widget _buildFooter(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const BrandText.caption('¿Eres nuevo? '),
+        GestureDetector(
+          onTap: () => context.push('/register'),
+          child: const Text(
+            'Crea una cuenta aquí',
+            style: TextStyle(
+              color: Colors.blueAccent, 
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
