@@ -7,14 +7,17 @@ class BrandText extends StatelessWidget {
   final Color? color;
   final TextAlign? textAlign;
 
-  const BrandText.header(this.text, {super.key, this.color, this.textAlign})
-      : fontSize = 32, fontWeight = FontWeight.bold;
+  const BrandText.header(this.text, {super.key, double? fontSize, this.color, this.textAlign})
+      : fontSize = fontSize ?? 32, 
+        fontWeight = FontWeight.bold;
 
-  const BrandText.body(this.text, {super.key, this.color, this.textAlign})
-      : fontSize = 16, fontWeight = FontWeight.normal;
+  const BrandText.body(this.text, {super.key, double? fontSize, this.color, this.textAlign})
+      : fontSize = fontSize ?? 16, 
+        fontWeight = FontWeight.normal;
 
-  const BrandText.caption(this.text, {super.key, this.color, this.textAlign})
-      : fontSize = 14, fontWeight = FontWeight.w400;
+  const BrandText.caption(this.text, {super.key, double? fontSize, this.color, this.textAlign})
+      : fontSize = fontSize ?? 14, 
+        fontWeight = FontWeight.w400;
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +27,8 @@ class BrandText extends StatelessWidget {
       style: TextStyle(
         fontSize: fontSize,
         fontWeight: fontWeight,
-        color: color ?? (fontSize == 32 ? Colors.black87 : Colors.grey[600]),
-        letterSpacing: fontSize == 32 ? -0.5 : 0,
+        color: color ?? (fontSize >= 28 ? Colors.black87 : Colors.grey[600]),
+        letterSpacing: fontSize >= 28 ? -0.5 : 0,
       ),
     );
   }

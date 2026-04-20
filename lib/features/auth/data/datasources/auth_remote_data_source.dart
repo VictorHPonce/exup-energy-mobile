@@ -8,7 +8,7 @@ abstract class AuthRemoteDataSource {
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
-  static const String baseUrl = "https://192.168.1.130:7161/api";
+  // static const String baseUrl = "https://192.168.1.130:7161/api";
 
   AuthRemoteDataSourceImpl({required this.dio});
 
@@ -16,7 +16,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModel> register(String name, String email, String password) async {
     try {
       final response = await dio.post(
-        '$baseUrl/auth/register',
+        '/auth/register',
         data: {
           'name': name,
           'email': email,
@@ -38,7 +38,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModel> login(String email, String password) async {
     try {
       final response = await dio.post(
-        '$baseUrl/auth/login',
+        '/auth/login',
         data: {'email': email, 'password': password},
       );
 
