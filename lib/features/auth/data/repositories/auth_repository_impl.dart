@@ -12,21 +12,21 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, UserEntity>> login(String email, String password) async {
     try {
-      // Llamamos al data source (que nos devuelve un UserModel)
       final userModel = await remoteDataSource.login(email, password);
-      
-      // Devolvemos el modelo (que al heredar de UserEntity es válido) envuelto en Right
       return Right(userModel);
     } catch (e) {
-      // Si el data source lanza una excepción, la capturamos y devolvemos un Failure
-      return Left(ServerFailure(e.toString()));
+      return Left(ServerFailure(e.toString())); 
     }
   }
 
   @override
-  Future<Either<Failure, UserEntity>> register(String email, String password, String name) async {
-    // Aquí implementarías la lógica de registro similar al login más adelante
-    throw UnimplementedError();
+  Future<Either<Failure, UserEntity>> register(String name, String email, String password) async {
+    try {
+      final userModel = await remoteDataSource.register(name, email, password);
+      return Right(userModel);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override

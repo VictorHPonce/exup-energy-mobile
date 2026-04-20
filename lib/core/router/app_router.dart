@@ -13,14 +13,15 @@ final appRouter = GoRouter(
     GoRoute(path: '/welcome', builder: (context, state) => const WelcomePage()),
     GoRoute(
       path: '/login',
-      builder: (context, state) => BlocProvider(
-        create: (_) => sl<AuthBloc>(),
-        child: const LoginPage(),
-      ),
+      builder: (context, state) =>
+          BlocProvider(create: (_) => sl<AuthBloc>(), child: const LoginPage()),
     ),
     GoRoute(
       path: '/register',
-      builder: (context, state) => const RegisterPage(), // La crearemos
+      builder: (context, state) => BlocProvider(
+        create: (_) => sl<AuthBloc>(),
+        child: const RegisterPage(),
+      ),
     ),
     GoRoute(
       path: '/home',

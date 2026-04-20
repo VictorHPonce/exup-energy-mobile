@@ -2,24 +2,18 @@ import '../../domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
   const UserModel({
-    required String id,
-    required String email,
-    required String name,
-    int? preferredFuelTypeId,
-  }) : super(
-          id: id,
-          email: email,
-          name: name,
-          preferredFuelTypeId: preferredFuelTypeId,
-        );
+    required super.id,
+    required super.email,
+    required super.name,
+    super.preferredFuelTypeId,
+  });
 
-  // El famoso "Factory" para convertir el JSON de tu API .NET a un objeto de Dart
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'],
-      email: json['email'],
-      name: json['name'],
-      preferredFuelTypeId: json['preferredFuelTypeId'],
+      id: json['id'] ?? '',
+      email: json['email'] ?? '',
+      name: json['name'] ?? '',
+      preferredFuelTypeId: json['preferred_fuel_type_id'] as int?,
     );
   }
 

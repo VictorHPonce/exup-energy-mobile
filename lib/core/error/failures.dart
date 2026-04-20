@@ -2,18 +2,18 @@ import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {
   final String message;
-  const Failure(this.message);
+  const Failure({required this.message});
 
   @override
   List<Object> get props => [message];
 }
 
-// Fallo específico para errores de servidor (500, 404, etc)
 class ServerFailure extends Failure {
-  const ServerFailure(String message) : super(message);
+  // Al ponerlo así, puedes llamarlo como ServerFailure("error") 
+  // y se lo pasa correctamente al padre.
+  const ServerFailure(String message) : super(message: message);
 }
 
-// Fallo para cuando no hay internet
 class ConnectionFailure extends Failure {
-  const ConnectionFailure() : super("No hay conexión a internet");
+  const ConnectionFailure() : super(message: "No hay conexión a internet");
 }
