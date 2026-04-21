@@ -1,32 +1,47 @@
-import 'package:dio/dio.dart'; // Importa la librería oficial
+import 'package:dio/dio.dart';
 import '../models/station_model.dart';
+import '../../../../core/models/pagination_model.dart';
 
 abstract class StationRemoteDataSource {
-  Future<List<StationModel>> getNearbyStations(double lat, double lon, double radius);
+  // Cambiamos a parámetros nombrados {} y agregamos 'page'
+  // Cambiamos el retorno a PaginationModel
+  Future<PaginationModel<StationModel>> getNearbyStations({
+    required double lat,
+    required double lon,
+    required double radius,
+    required int page, 
+  });
 }
 
 class StationRemoteDataSourceImpl implements StationRemoteDataSource {
-  // Ahora usamos Dio directamente
   final Dio dio;
-
   StationRemoteDataSourceImpl({required this.dio});
 
   @override
-  Future<List<StationModel>> getNearbyStations(double lat, double lon, double radius) async {
+  Future<PaginationModel<StationModel>> getNearbyStations({
+    required double lat,
+    required double lon,
+    required double radius,
+    required int page,
+  }) async {
     try {
       final response = await dio.get(
-        '/GasStation/nearby', // Asegúrate de que la BaseUrl esté configurada en el Dio
+        '/GasStation/nearby',
         queryParameters: {
           'lat': lat,
           'lon': lon,
           'radius': radius,
+          'pageIndex': page, // Asegúrate que coincida con el parámetro de tu API .NET
         },
       );
 
-      final List<dynamic> data = response.data;
-      return data.map((json) => StationModel.fromJson(json)).toList();
+      // Usamos el factory genérico que ya creaste
+      return PaginationModel<StationModel>.fromJson(
+        response.data,
+        (json) => StationModel.fromJson(json),
+      );
     } catch (e) {
-      throw Exception("Error al obtener gasolineras cercanas: $e");
+      throw Exception("Error al obtener gasolineras: $e");
     }
   }
 }

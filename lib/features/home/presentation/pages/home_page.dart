@@ -1,6 +1,9 @@
+import 'package:exup_energy_mobile/features/gas_stations/presentation/bloc/stations_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/widgets/organisms/custom_drawer.dart';
 import '../../../gas_stations/presentation/pages/gas_stations_page.dart';
+import '../../../gas_stations/presentation/bloc/stations_event.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,9 +15,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  // Lista de páginas para el BottomNav
+  // Usamos una función para obtener las páginas.
+  // Esto asegura que GasStationsPage mantenga su estado dentro del IndexedStack.
   final List<Widget> _pages = [
-    const GasStationsPage(), // La pestaña de gasolineras ahora es dinámica
+    const GasStationsPage(),
     const Center(child: Text('Pantalla de Carga (Próximamente)')),
     const Center(child: Text('Perfil de Usuario')),
   ];
@@ -29,23 +33,24 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
-              // Ejemplo de cómo refrescar desde el shell
-              // context.read<StationsBloc>().add(...)
+              // Refresco manual desde la AppBar
+              context.read<StationsBloc>().add(
+                const FetchNearbyStations(lat: 0.0, lon: 0.0),
+              );
             },
-          )
+          ),
         ],
       ),
       drawer: const CustomDrawer(),
-      // El body ahora cambia según el índice
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: _selectedIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) => setState(() => _selectedIndex = index),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.local_gas_station), label: 'Estaciones'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_gas_station),
+            label: 'Estaciones',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.bolt), label: 'Cargar'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],

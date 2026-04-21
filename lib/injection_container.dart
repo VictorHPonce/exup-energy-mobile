@@ -13,7 +13,6 @@ import 'features/gas_stations/domain/repositories/station_repository.dart';
 import 'features/gas_stations/domain/usecases/get_nearby_stations_usecase.dart';
 import 'features/gas_stations/presentation/bloc/stations_bloc.dart';
 import 'core/services/location_service.dart';
-import '../features/gas_stations/presentation/bloc/stations_bloc.dart';
 
 final sl = GetIt.instance; // sl = Service Locator
 

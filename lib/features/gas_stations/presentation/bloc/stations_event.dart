@@ -16,3 +16,18 @@ class FetchNearbyStations extends StationsEvent {
   @override
   List<Object> get props => [lat, lon, radius];
 }
+
+class LoadNextPage extends StationsEvent {
+  final double lat;
+  final double lon;
+  final double radius;
+
+  const LoadNextPage({
+    required this.lat, 
+    required this.lon, 
+    required this.radius
+  });
+
+  @override
+  List<Object> get props => [lat, lon, radius];
+}

@@ -13,7 +13,6 @@ class WelcomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        // Importante para no chocar con el notch del móvil
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(

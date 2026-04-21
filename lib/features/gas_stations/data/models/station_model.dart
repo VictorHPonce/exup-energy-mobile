@@ -19,7 +19,7 @@ class StationModel extends StationEntity {
       externalId: json['externalId'] ?? '',
       name: json['name'] ?? 'Sin nombre',
       address: json['address'] ?? '',
-      distance: ((json['distance'] as num?)?.toDouble() ?? 0.0) / 1000,
+      distance: ((json['distance'] as num?)?.toDouble() ?? 0.0),
       brandName: json['brandName'] ?? 'Genérica',
       latitude: (json['latitude'] as num?)?.toDouble() ?? 0.0,
       longitude: (json['longitude'] as num?)?.toDouble() ?? 0.0,
