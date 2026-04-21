@@ -9,7 +9,6 @@ abstract class AuthRemoteDataSource {
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final Dio dio;
-  // static const String baseUrl = "https://192.168.1.130:7161/api";
 
   AuthRemoteDataSourceImpl({required this.dio});
 

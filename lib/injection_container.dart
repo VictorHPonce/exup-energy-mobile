@@ -1,20 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'core/network/dio_client.dart';
-import 'features/auth/data/datasources/auth_remote_data_source.dart';
-import 'features/auth/data/repositories/auth_repository_impl.dart';
-import 'features/auth/domain/repositories/auth_repository.dart';
-import 'features/auth/domain/usecases/login_usecase.dart';
-import 'features/auth/domain/usecases/register_usecase.dart';
-import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'features/gas_stations/data/datasources/station_remote_data_source.dart';
-import 'features/gas_stations/data/repositories/station_repository_impl.dart';
-import 'features/gas_stations/domain/repositories/station_repository.dart';
-import 'features/gas_stations/domain/usecases/get_nearby_stations_usecase.dart';
-import 'features/gas_stations/presentation/bloc/stations_bloc.dart';
+import 'package:exup_energy_mobile/features/auth/auth.dart';
+import 'package:exup_energy_mobile/features/gas_stations/gas_stations.dart';
 import 'core/services/location_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'features/auth/data/datasources/auth_local_data_source.dart';
 
 final sl = GetIt.instance; // sl = Service Locator
 
@@ -24,12 +14,14 @@ Future<void> init() async {
   // Blocs (Es mejor registrarlos arriba o abajo, pero mantén el orden)
   sl.registerFactory(() => AuthBloc(
     loginUseCase: sl(), 
-    registerUseCase: sl(), // Asegúrate de haber inyectado RegisterUseCase abajo
+    registerUseCase: sl(),
+    logoutUseCase: sl(),
   ));
 
   // Use cases 
   sl.registerLazySingleton(() => LoginUseCase(sl()));
   sl.registerLazySingleton(() => RegisterUseCase(sl()));
+  sl.registerLazySingleton(() => LogoutUseCase(sl()));
 
   // Repository
   sl.registerLazySingleton<AuthRepository>(
@@ -71,4 +63,5 @@ sl.registerFactory(() => StationsBloc(getNearbyStationsUseCase: sl(), locationSe
   sl.registerLazySingleton(() => GetNearbyStationsUseCase(sl()));
 
   sl.registerLazySingleton(() => LocationService());
+
 }

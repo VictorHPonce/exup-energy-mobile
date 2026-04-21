@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../atoms/brand_text.dart';
-import '../../../features/auth/presentation/widgets/custom_text_field.dart';
+import 'package:exup_energy_mobile/features/auth/auth.dart';
 
 class InputGroup extends StatelessWidget {
   final String label;

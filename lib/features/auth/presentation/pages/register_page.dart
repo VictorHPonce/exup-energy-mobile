@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/widgets/atoms/brand_text.dart';
-import '../../../../core/utils/ui_utils.dart';
+import 'package:exup_energy_mobile/core/widgets/widgets.dart';
+import 'package:exup_energy_mobile/core/core.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';

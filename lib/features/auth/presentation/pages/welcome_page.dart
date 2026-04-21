@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-// Importamos nuestros Átomos y Moléculas
-import '../../../../core/widgets/atoms/brand_text.dart';
-import '../../../../core/widgets/atoms/primary_button.dart';
+import 'package:exup_energy_mobile/core/widgets/widgets.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -49,14 +46,14 @@ class WelcomePage extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              // Molécula: Botón de texto simple (Acción Secundaria)
               TextButton(
-                onPressed: () => context.go('/home'), // Navegación directa
+                onPressed: () => context.go('/home'),
                 child: const Text(
-                  'Explorar sin cuenta',
+                  'Entrar como invitado',
                   style: TextStyle(
                     color: Colors.blueAccent,
                     fontWeight: FontWeight.w600,
+                    fontSize: 16,
                   ),
                 ),
               ),

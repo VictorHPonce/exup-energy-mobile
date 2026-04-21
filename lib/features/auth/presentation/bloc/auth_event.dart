@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 
 abstract class AuthEvent extends Equatable {
+  const AuthEvent();
   @override
   List<Object> get props => [];
 }
 
-// El evento que dispararemos cuando el usuario pulse el botón
 class LoginSubmittedEvent extends AuthEvent {
   final String email;
   final String password;
 
-  LoginSubmittedEvent(this.email, this.password);
+  const LoginSubmittedEvent(this.email, this.password);
 
   @override
   List<Object> get props => [email, password];
@@ -21,7 +21,7 @@ class RegisterSubmittedEvent extends AuthEvent {
   final String email;
   final String password;
 
-  RegisterSubmittedEvent({
+  const RegisterSubmittedEvent({
     required this.name,
     required this.email,
     required this.password,
@@ -29,4 +29,8 @@ class RegisterSubmittedEvent extends AuthEvent {
 
   @override
   List<Object> get props => [name, email, password];
+}
+
+class LogoutRequested extends AuthEvent {
+  const LogoutRequested();
 }

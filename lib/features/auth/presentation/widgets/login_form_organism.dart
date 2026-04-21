@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart'; // ¡Asegúrate de este import!
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/widgets/atoms/primary_button.dart';
 import '../../../../core/widgets/molecules/input_group.dart';
 import '../bloc/auth_bloc.dart';

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:exup_energy_mobile/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:exup_energy_mobile/injection_container.dart';
-import '../../features/auth/data/datasources/auth_local_data_source.dart';
+import 'package:exup_energy_mobile/features/auth/auth.dart';
+
 
 class AuthInterceptor extends Interceptor {
   final AuthLocalDataSource authLocalDataSource;
