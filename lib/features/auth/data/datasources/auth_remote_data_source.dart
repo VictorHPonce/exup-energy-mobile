@@ -4,6 +4,7 @@ import '../models/user_model.dart';
 abstract class AuthRemoteDataSource {
   Future<UserModel> login(String email, String password);
   Future<UserModel> register(String name, String email, String password);
+  Future<UserModel> refreshToken(String expiredToken, String refreshToken);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -49,6 +50,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? "Error de servidor");
+    }
+  }
+
+  @override
+  Future<UserModel> refreshToken(String expiredToken, String refreshToken) async {
+    try {
+      final response = await dio.post('/auth/refresh-token', data: {
+        'expiredToken': expiredToken,
+        'refreshToken': refreshToken,
+      });
+
+      return UserModel.fromJson(response.data);
+    } catch (e) {
+      throw Exception("No se pudo refrescar el token");
     }
   }
 }

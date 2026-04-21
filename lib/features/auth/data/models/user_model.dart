@@ -1,19 +1,26 @@
 import '../../domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
+  final String? token;
+  final String? refreshToken;
+
   const UserModel({
     required super.id,
     required super.email,
     required super.name,
     super.preferredFuelTypeId,
+    this.token,
+    this.refreshToken,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] ?? '',
+      id: json['id']?.toString() ?? '',
       email: json['email'] ?? '',
       name: json['name'] ?? '',
       preferredFuelTypeId: json['preferred_fuel_type_id'] as int?,
+      token: json['token'],
+      refreshToken: json['refreshToken'],
     );
   }
 

@@ -17,3 +17,7 @@ class ServerFailure extends Failure {
 class ConnectionFailure extends Failure {
   const ConnectionFailure() : super(message: "No hay conexión a internet");
 }
+
+class CacheFailure extends Failure {
+  const CacheFailure(String message) : super(message: message);
+}

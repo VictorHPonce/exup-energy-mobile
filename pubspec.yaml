@@ -54,6 +54,10 @@ dependencies:
   # Para obtener la ubicación del dispositivo (similar a tu Geolocator en Angular)
   geolocator: ^13.0.0
 
+  # Para abrir URLs (similar a tu UrlLauncher en Angular)
+  url_launcher: ^6.3.0
+  flutter_secure_storage: ^10.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -13,6 +13,8 @@ import 'features/gas_stations/domain/repositories/station_repository.dart';
 import 'features/gas_stations/domain/usecases/get_nearby_stations_usecase.dart';
 import 'features/gas_stations/presentation/bloc/stations_bloc.dart';
 import 'core/services/location_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'features/auth/data/datasources/auth_local_data_source.dart';
 
 final sl = GetIt.instance; // sl = Service Locator
 
@@ -31,7 +33,7 @@ Future<void> init() async {
 
   // Repository
   sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(remoteDataSource: sl()),
+    () => AuthRepositoryImpl(remoteDataSource: sl(), localDataSource: sl()),
   );
 
   // Data sources
@@ -39,9 +41,16 @@ Future<void> init() async {
     () => AuthRemoteDataSourceImpl(dio: sl()),
   );
 
+  sl.registerLazySingleton<AuthLocalDataSource>(
+    () => AuthLocalDataSourceImpl(storage: sl()),
+  );
+
   //! Core
-  // sl() buscará lo que devuelva getDio(). Si getDio devuelve Dio, funcionará.
-  sl.registerLazySingleton<Dio>(() => getDio()); 
+  //Registro de Secure Storage
+  sl.registerLazySingleton(() => const FlutterSecureStorage());
+
+  // MODIFICADO: Ahora getDio recibe el localDataSource para el interceptor
+  sl.registerLazySingleton<Dio>(() => getDio(sl<AuthLocalDataSource>()));
 
   //! Features - Gas Stations
 
