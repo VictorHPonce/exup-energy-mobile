@@ -1,7 +1,7 @@
 import 'package:exup_energy_mobile/features/gas_stations/presentation/bloc/stations_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/widgets/organisms/custom_drawer.dart';
+import '../../widgets/custom_drawer.dart';
 import '../../../gas_stations/presentation/pages/gas_stations_page.dart';
 import '../../../gas_stations/presentation/bloc/stations_event.dart';
 

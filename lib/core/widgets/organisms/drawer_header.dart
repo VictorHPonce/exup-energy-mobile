@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:exup_energy_mobile/core/theme/app_theme.dart';
 import '../atoms/brand_text.dart';
 
 class CustomDrawerHeader extends StatelessWidget {
@@ -15,41 +16,51 @@ class CustomDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
+      padding: const EdgeInsets.fromLTRB(
+        AppTheme.paddingL, 
+        AppTheme.headerPaddingTop, 
+        AppTheme.paddingL, 
+        AppTheme.paddingL
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            theme.primaryColor,
-            theme.primaryColor.withBlue(200),
+            colorScheme.primary,
+            colorScheme.primaryContainer,
           ],
         ),
-        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(40)),
+        borderRadius: const BorderRadius.only(
+          bottomRight: Radius.circular(AppTheme.headerRadius)
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            radius: 35,
-            backgroundColor: Colors.white.withValues(alpha: 0.2),
+            radius: AppTheme.avatarOuterRadius,
+            backgroundColor: colorScheme.onPrimary.withValues(alpha: 0.2),
             child: CircleAvatar(
-              radius: 32,
-              backgroundColor: Colors.white,
+              radius: AppTheme.avatarInnerRadius,
+              backgroundColor: colorScheme.surface,
               child: Icon(
                 isGuest ? Icons.person_outline : Icons.person,
-                size: 35,
-                color: theme.primaryColor,
+                size: AppTheme.avatarOuterRadius,
+                color: colorScheme.primary,
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          BrandText.header(name, color: Colors.white),
-          BrandText.caption(email, color: Colors.white.withValues(alpha: 0.8)),
+          const SizedBox(height: AppTheme.paddingM),
+          BrandText.header(name, color: colorScheme.onPrimary),
+          BrandText.caption(
+            email, 
+            color: colorScheme.onPrimary.withValues(alpha: 0.8),
+          ),
         ],
       ),
     );

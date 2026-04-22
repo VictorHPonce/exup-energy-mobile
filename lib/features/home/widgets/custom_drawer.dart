@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:exup_energy_mobile/features/auth/auth.dart';
 import 'package:exup_energy_mobile/core/widgets/widgets.dart';
+import 'package:exup_energy_mobile/core/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -9,26 +10,16 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        String name = "Invitado";
-        String email = "Explorando ExUp Energy";
-        bool isGuest = true;
-
-        if (state is AuthSuccess) {
-          name = state.user.name;
-          email = state.user.email;
-          isGuest = false;
-        }
+        // Lógica de datos de usuario
+        final String name = (state is AuthSuccess) ? state.user.name : "Invitado";
+        final String email = (state is AuthSuccess) ? state.user.email : "Explorando ExUp Energy";
+        final bool isGuest = state is! AuthSuccess;
 
         return Drawer(
-          backgroundColor: colorScheme.surface,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.horizontal(right: Radius.circular(32)),
-          ),
+          // No hace falta poner backgroundColor ni shape, ya están en el AppTheme!
           child: Column(
             children: [
               CustomDrawerHeader(
@@ -37,16 +28,15 @@ class CustomDrawer extends StatelessWidget {
                 isGuest: isGuest,
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.paddingM),
 
-              // LISTADO DE OPCIONES
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: AppTheme.paddingM),
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
-                      _SectionTitle(title: "Navegación"),
+                      const _SectionTitle(title: "Navegación"),
                       DrawerItem(
                         icon: Icons.home_rounded,
                         label: 'Inicio',
@@ -57,8 +47,9 @@ class CustomDrawer extends StatelessWidget {
                         label: 'Mapa de Estaciones',
                         onTap: () {},
                       ),
-                      const SizedBox(height: 20),
-                      _SectionTitle(title: "Preferencias"),
+                      
+                      const SizedBox(height: AppTheme.paddingL),
+                      const _SectionTitle(title: "Preferencias"),
                       DrawerItem(
                         icon: Icons.favorite_rounded,
                         label: 'Mis Favoritos',
@@ -74,10 +65,10 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ),
 
-              // PIE DE PÁGINA (Boton de acción de sesión)
+              // Botón de sesión al final
               Padding(
-                padding: const EdgeInsets.all(24),
-                child: _buildSessionButton(context, isGuest),
+                padding: const EdgeInsets.all(AppTheme.paddingL),
+                child: _SessionButton(isGuest: isGuest),
               ),
             ],
           ),
@@ -85,13 +76,23 @@ class CustomDrawer extends StatelessWidget {
       },
     );
   }
+}
 
+/// Botón de sesión estilizado como molécula privada
+class _SessionButton extends StatelessWidget {
+  final bool isGuest;
+  const _SessionButton({required this.isGuest});
 
-  Widget _buildSessionButton(BuildContext context, bool isGuest) {
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return DrawerItem(
       icon: isGuest ? Icons.login_rounded : Icons.logout_rounded,
       label: isGuest ? 'Iniciar Sesión' : 'Cerrar Sesión',
-      color: isGuest ? Colors.blueAccent : Colors.redAccent,
+      // Usamos el color de error del tema para el logout (rojo) 
+      // y el primario para el login
+      color: isGuest ? colorScheme.primary : colorScheme.error,
       onTap: () {
         if (!isGuest) {
           context.read<AuthBloc>().add(const LogoutRequested());
@@ -102,21 +103,28 @@ class CustomDrawer extends StatelessWidget {
   }
 }
 
-// Widget auxiliar para títulos de sección
+/// Título de sección que consume tokens del tema
 class _SectionTitle extends StatelessWidget {
   final String title;
   const _SectionTitle({required this.title});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Padding(
-      padding: const EdgeInsets.only(left: 12, bottom: 8, top: 16),
+      padding: const EdgeInsets.only(
+        left: AppTheme.paddingS, 
+        bottom: AppTheme.paddingS, 
+        top: AppTheme.paddingM
+      ),
       child: Text(
         title.toUpperCase(),
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.bold,
-          color: Colors.grey.withValues(alpha: 0.8),
+          // Color semántico para textos secundarios
+          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.8),
           letterSpacing: 1.2,
         ),
       ),
