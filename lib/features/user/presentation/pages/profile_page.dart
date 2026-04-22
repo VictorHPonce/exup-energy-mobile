@@ -55,7 +55,6 @@ class ProfilePage extends StatelessWidget {
                           title: "Combustible Preferido",
                           subtitle: (user?.preferredFuelTypeId == null)
                               ? "Selecciona tu combustible"
-                              // Añadimos 'context' antes del ID
                               : _getFuelNameById(
                                   context,
                                   user!.preferredFuelTypeId!,
@@ -288,10 +287,15 @@ class ProfilePage extends StatelessWidget {
 
   String _getFuelNameById(BuildContext context, int id) {
     final fuels = context.read<AuthBloc>().allFuels;
+
+    if (fuels.isEmpty)
+      return "Cargando..."; // Feedback mientras descarga de .NET
+
     final fuel = fuels.firstWhere(
       (f) => f.id == id,
-      orElse: () => FuelTypeModel(id: 0, name: 'Combustible'),
+      orElse: () => FuelTypeModel(id: 0, name: 'Personalizado'),
     );
+
     return fuel.name;
   }
 }

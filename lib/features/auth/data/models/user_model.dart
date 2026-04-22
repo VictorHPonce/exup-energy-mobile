@@ -18,7 +18,7 @@ class UserModel extends UserEntity {
       id: json['id']?.toString() ?? '',
       email: json['email'] ?? '',
       name: json['name'] ?? '',
-      preferredFuelTypeId: json['preferred_fuel_type_id'] as int?,
+      preferredFuelTypeId: json['preferredFuelTypeId'] as int?,
       token: json['token'],
       refreshToken: json['refreshToken'],
     );
