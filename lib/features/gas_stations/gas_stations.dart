@@ -4,6 +4,7 @@ export 'data/repositories/station_repository_impl.dart';
 export 'domain/entities/station_entity.dart';
 export 'domain/repositories/station_repository.dart';
 export 'domain/usecases/get_nearby_stations_usecase.dart';
+export 'domain/usecases/get_fuel_types_use_case.dart';
 export 'presentation/bloc/stations_bloc.dart';
 export 'presentation/bloc/stations_event.dart';
 export 'presentation/bloc/stations_state.dart';

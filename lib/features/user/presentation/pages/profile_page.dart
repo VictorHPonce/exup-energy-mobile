@@ -1,4 +1,3 @@
-import 'package:exup_energy_mobile/core/constants/fuel_constants.dart';
 import 'package:exup_energy_mobile/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,10 +53,13 @@ class ProfilePage extends StatelessWidget {
                         ProfileOptionTile(
                           icon: Icons.local_gas_station_outlined,
                           title: "Combustible Preferido",
-                          // 3. USAMOS LA VARIABLE SEGURA AQUÍ TAMBIÉN
                           subtitle: (user?.preferredFuelTypeId == null)
                               ? "Selecciona tu combustible"
-                              : _getFuelNameById(user!.preferredFuelTypeId!),
+                              // Añadimos 'context' antes del ID
+                              : _getFuelNameById(
+                                  context,
+                                  user!.preferredFuelTypeId!,
+                                ),
                           onTap: isGuest
                               ? () {}
                               : () => _showFuelPicker(context, name),
@@ -152,21 +154,71 @@ class ProfilePage extends StatelessWidget {
   }
 
   void _showFuelPicker(BuildContext context, String currentName) {
+    // 1. Obtenemos la lista completa del AuthBloc (que viene de .NET)
+    final fuelsFromApi = context.read<AuthBloc>().allFuels;
+
+    // 2. Filtramos los comunes usando tu nueva constante (por nombre, no por ID)
+    final commonFuels = FuelConstants.getCommonFuels(fuelsFromApi);
+
+    final colorScheme = Theme.of(context).colorScheme;
+
     UiUtils.showCustomModal(
       context: context,
       title: "Combustible",
-      subtitle: "Empieza a escribir para encontrar tu combustible.",
+      subtitle: "Selecciona un acceso rápido o busca tu combustible.",
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Autocomplete<Map<String, dynamic>>(
-            displayStringForOption: (option) => option['name'],
-            optionsBuilder: (TextEditingValue textEditingValue) {
-              if (textEditingValue.text.isEmpty) {
-                return const Iterable<Map<String, dynamic>>.empty();
-              }
-              return FuelConstants.allFuels.where(
-                (fuel) => fuel['name'].toString().toLowerCase().contains(
+          // --- SECCIÓN DE ACCESOS RÁPIDOS ---
+          if (commonFuels.isNotEmpty) ...[
+            _sectionHeader(context, "Más usados"),
+            const SizedBox(height: AppTheme.paddingS),
+            Wrap(
+              spacing: 8,
+              runSpacing: 0,
+              children: commonFuels
+                  .map(
+                    (fuel) => ActionChip(
+                      label: Text(fuel.name),
+                      labelStyle: TextStyle(
+                        color: colorScheme.onPrimaryContainer,
+                        fontSize: 12,
+                      ),
+                      backgroundColor: colorScheme.primaryContainer.withValues(
+                        alpha: 0.4,
+                      ),
+                      side: BorderSide.none,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppTheme.radiusM),
+                      ),
+                      onPressed: () {
+                        context.read<UserBloc>().add(
+                          UpdateProfileSubmitted(
+                            name: currentName,
+                            preferredFuelTypeId: fuel.id,
+                          ),
+                        );
+                        Navigator.pop(context);
+                      },
+                    ),
+                  )
+                  .toList(),
+            ),
+            const SizedBox(height: AppTheme.paddingL),
+            const Divider(),
+            const SizedBox(height: AppTheme.paddingM),
+          ],
+
+          // --- TU AUTOCOMPLETE ORIGINAL (CON LA LISTA DINÁMICA) ---
+          _sectionHeader(context, "Todos los tipos"),
+          const SizedBox(height: AppTheme.paddingS),
+          Autocomplete<FuelTypeModel>(
+            displayStringForOption: (option) => option.name,
+            optionsBuilder: (textEditingValue) {
+              if (textEditingValue.text.isEmpty) return const Iterable.empty();
+              return fuelsFromApi.where(
+                (fuel) => fuel.name.toLowerCase().contains(
                   textEditingValue.text.toLowerCase(),
                 ),
               );
@@ -175,7 +227,7 @@ class ProfilePage extends StatelessWidget {
               context.read<UserBloc>().add(
                 UpdateProfileSubmitted(
                   name: currentName,
-                  preferredFuelTypeId: selection['id'],
+                  preferredFuelTypeId: selection.id,
                 ),
               );
               Navigator.pop(context);
@@ -184,22 +236,21 @@ class ProfilePage extends StatelessWidget {
                 (context, controller, focusNode, onFieldSubmitted) {
                   return CustomTextField(
                     controller: controller,
-                    focusNode:
-                        focusNode, // Importante para la gestión del teclado
+                    focusNode: focusNode,
                     label: "Tipo de combustible",
                     hint: "Ej: Diesel, Gasolina, GLP...",
                     prefixIcon: Icons.search_rounded,
                   );
                 },
             optionsViewBuilder: (context, onSelected, options) {
-              // Esto controla cómo se ve la lista desplegable
               return Align(
                 alignment: Alignment.topLeft,
                 child: Material(
                   elevation: 8,
                   borderRadius: BorderRadius.circular(AppTheme.radiusM),
-                  color: Theme.of(context).colorScheme.surface,
+                  color: colorScheme.surface,
                   child: Container(
+                    // Ajuste de ancho para que no se salga de la pantalla
                     width:
                         MediaQuery.of(context).size.width -
                         (AppTheme.paddingL * 2),
@@ -212,12 +263,13 @@ class ProfilePage extends StatelessWidget {
                         final option = options.elementAt(index);
                         return ListTile(
                           title: BrandText.body(
-                            option['name'],
+                            option.name,
                             fontWeight: FontWeight.w500,
                           ),
-                          trailing: const Icon(
+                          trailing: Icon(
                             Icons.add_circle_outline_rounded,
                             size: 18,
+                            color: colorScheme.primary,
                           ),
                           onTap: () => onSelected(option),
                         );
@@ -234,12 +286,12 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  String _getFuelNameById(int id) {
-    // Buscamos en la lista completa para asegurar que cubrimos cualquier ID
-    final fuel = FuelConstants.allFuels.firstWhere(
-      (f) => f['id'] == id,
-      orElse: () => {'name': 'Combustible'},
+  String _getFuelNameById(BuildContext context, int id) {
+    final fuels = context.read<AuthBloc>().allFuels;
+    final fuel = fuels.firstWhere(
+      (f) => f.id == id,
+      orElse: () => FuelTypeModel(id: 0, name: 'Combustible'),
     );
-    return fuel['name'];
+    return fuel.name;
   }
 }

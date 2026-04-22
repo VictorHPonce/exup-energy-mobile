@@ -1,19 +1,18 @@
+import 'package:exup_energy_mobile/core/core.dart';
+
 class FuelConstants {
-  // Los 4 más usados para acceso rápido
-  static const List<Map<String, dynamic>> commonFuels = [
-    {'id': 35, 'name': 'Gasolina 95'},
-    {'id': 29, 'name': 'Gasolina 98'},
-    {'id': 43, 'name': 'Gasóleo A (Diésel)'},
-    {'id': 39, 'name': 'GLP'}, // Aquí simplificamos el nombre largo de tu DB
+  // Solo guardamos los NOMBRES que queremos filtrar como "comunes"
+  static const List<String> commonFuelNames = [
+    'Gasolina 95 E5',
+    'Gasóleo A',
+    'GLP',
+    'GNC',
   ];
 
-  // Lista completa para el buscador (Extraída de tu SQL)
-  static const List<Map<String, dynamic>> allFuels = [
-    {'id': 24, 'name': 'Gas Natural Licuado'},
-    {'id': 25, 'name': 'Biodiesel'},
-    {'id': 39, 'name': 'GLP'},
-    {'id': 43, 'name': 'Gasoleo A'},
-    {'id': 46, 'name': 'Diésel Renovable'},
-    // ... añade los demás aquí
-  ];
+  // Esta función filtrará la lista que viene de la API por esos nombres
+  static List<FuelTypeModel> getCommonFuels(List<FuelTypeModel> allFuelsFromApi) {
+    return allFuelsFromApi
+        .where((fuel) => commonFuelNames.contains(fuel.name))
+        .toList();
+  }
 }

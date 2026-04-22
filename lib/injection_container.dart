@@ -50,12 +50,14 @@ Future<void> init() async {
     loginUseCase: sl(), 
     registerUseCase: sl(),
     logoutUseCase: sl(),
-    getUserProfileUseCase: sl(), // <-- Agregamos esto para el perfil real
+    getUserProfileUseCase: sl(),
+    getFuelTypesUseCase: sl(),
   ));
 
   //! 4. FEATURE - GAS STATIONS
   sl.registerLazySingleton<StationRemoteDataSource>(() => StationRemoteDataSourceImpl(dio: sl()));
   sl.registerLazySingleton<StationRepository>(() => StationRepositoryImpl(remoteDataSource: sl()));
+  sl.registerLazySingleton(() => GetFuelTypesUseCase(sl()));
   sl.registerLazySingleton(() => GetNearbyStationsUseCase(sl()));
   sl.registerFactory(() => StationsBloc(getNearbyStationsUseCase: sl(), locationService: sl()));
 }
