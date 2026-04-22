@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/widgets/atoms/primary_button.dart';
-import '../../../../core/widgets/molecules/input_group.dart';
+import 'package:exup_energy_mobile/core/core.dart';
+import 'package:exup_energy_mobile/core/widgets/widgets.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 
@@ -27,7 +27,7 @@ class LoginFormOrganism extends StatelessWidget {
           controller: emailController,
           icon: Icons.alternate_email,
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppTheme.paddingL), // Usamos token
         InputGroup(
           label: 'Contraseña',
           hint: '••••••••',
@@ -35,12 +35,12 @@ class LoginFormOrganism extends StatelessWidget {
           obscureText: true,
           icon: Icons.lock_outline_rounded,
         ),
-        const SizedBox(height: 40),
+        const SizedBox(height: AppTheme.paddingL * 1.5), // Espaciado proporcional
+        
         PrimaryButton(
           text: 'Iniciar Sesión',
           isLoading: isLoading,
           onPressed: () {
-            // DISPARO DEL EVENTO
             context.read<AuthBloc>().add(
               LoginSubmittedEvent(
                 emailController.text, 

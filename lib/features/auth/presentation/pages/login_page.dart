@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../bloc/auth_bloc.dart';
-import '../bloc/auth_state.dart';
-import '../widgets/login_form_organism.dart';
+import 'package:exup_energy_mobile/core/theme/app_theme.dart';
+import 'package:exup_energy_mobile/core/utils/ui_utils.dart';
+import 'package:exup_energy_mobile/features/auth/auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,33 +18,28 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(elevation: 0, backgroundColor: Colors.white),
-      // Cambiamos BlocBuilder por BlocConsumer para tener el Listener
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            // Navegación al Home (asegúrate de tenerla definida en el router)
-            context.go('/home'); 
+            context.go('/home');
           } else if (state is AuthError) {
-            // Mostramos un SnackBar si las credenciales fallan
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.redAccent,
-              ),
-            );
+            UiUtils.showSnackBar(context, state.message, isError: true);
           }
         },
         builder: (context, state) {
           return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppTheme.paddingL,
+            ), // Tokenizado
             child: Column(
               children: [
-                const SizedBox(height: 40),
-                const Icon(Icons.bolt, size: 80, color: Colors.blueAccent),
-                const SizedBox(height: 40),
+                const SizedBox(height: AppTheme.paddingL),
+                Icon(Icons.bolt, size: 80, color: colorScheme.primary),
+                const SizedBox(height: AppTheme.paddingL),
+
                 LoginFormOrganism(
                   emailController: _emailController,
                   passwordController: _passwordController,

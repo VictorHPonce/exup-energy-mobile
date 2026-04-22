@@ -4,4 +4,5 @@ export 'network/auth_interceptor.dart';
 export 'network/dio_client.dart';
 export 'router/app_router.dart';
 export 'services/location_service.dart';
+export 'theme/app_theme.dart';
 export 'utils/ui_utils.dart';

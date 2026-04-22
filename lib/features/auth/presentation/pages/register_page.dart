@@ -39,12 +39,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Al no definir backgroundColors, Flutter usa el 'surface' del tema
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 0, 
-        backgroundColor: Colors.white, 
-        iconTheme: const IconThemeData(color: Colors.black)
+        backgroundColor: Colors.transparent, // Transparente para ver el fondo del Scaffold
+        elevation: 0,
+        // iconTheme se hereda del tema principal, no hace falta forzarlo a negro
       ),
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -58,13 +58,17 @@ class _RegisterPageState extends State<RegisterPage> {
         },
         builder: (context, state) {
           return SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            // Padding tokenizado (AppTheme.paddingL = 24 o 30 según definas)
+            padding: const EdgeInsets.symmetric(horizontal: AppTheme.paddingL),
             child: Column(
               children: [
                 const BrandText.header('Nueva Cuenta'),
-                const SizedBox(height: 10),
-                const BrandText.body('Únete a la red de energía más grande.'),
-                const SizedBox(height: 30),
+                const SizedBox(height: AppTheme.paddingS),
+                const BrandText.body(
+                  'Únete a la red de energía más grande.',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppTheme.paddingL),
                 RegisterFormOrganism(
                   nameController: _nameController,
                   emailController: _emailController,
@@ -73,6 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   isLoading: state is AuthLoading,
                   onRegisterPressed: () => _handleRegister(context),
                 ),
+                const SizedBox(height: AppTheme.paddingL),
               ],
             ),
           );
