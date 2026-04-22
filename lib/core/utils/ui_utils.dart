@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:exup_energy_mobile/core/theme/app_theme.dart';
 import 'dart:io';
 
 class UiUtils {
   static void showSnackBar(BuildContext context, String message, {bool isError = false}) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: const TextStyle(color: Colors.white)),
-        backgroundColor: isError ? Colors.redAccent : Colors.green,
+        content: Text(
+          message, 
+          style: TextStyle(
+            color: colorScheme.onInverseSurface, 
+            fontWeight: FontWeight.w500
+          )
+        ),
+        backgroundColor: isError ? colorScheme.error : colorScheme.secondary,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        margin: const EdgeInsets.all(AppTheme.paddingM),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppTheme.radiusM)
+        ),
         duration: const Duration(seconds: 3),
       ),
     );
   }
-
   static Future<void> openNavigationMap(double lat, double lon) async {
     Uri uri;
     

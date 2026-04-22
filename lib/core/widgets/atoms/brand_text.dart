@@ -7,17 +7,35 @@ class BrandText extends StatelessWidget {
   final Color? color;
   final TextAlign? textAlign;
 
-  const BrandText.header(this.text, {super.key, double? fontSize, this.color, this.textAlign})
-      : fontSize = fontSize ?? 32,
-        fontWeight = FontWeight.bold;
+  const BrandText.header(
+    this.text, {
+    super.key,
+    double? fontSize,
+    FontWeight? fontWeight,
+    this.color,
+    this.textAlign,
+  })  : fontSize = fontSize ?? 32,
+        fontWeight = fontWeight ?? FontWeight.bold;
 
-  const BrandText.body(this.text, {super.key, double? fontSize, this.color, this.textAlign})
-      : fontSize = fontSize ?? 16,
-        fontWeight = FontWeight.normal;
+  const BrandText.body(
+    this.text, {
+    super.key,
+    double? fontSize,
+    FontWeight? fontWeight,
+    this.color,
+    this.textAlign,
+  })  : fontSize = fontSize ?? 16,
+        fontWeight = fontWeight ?? FontWeight.normal;
 
-  const BrandText.caption(this.text, {super.key, double? fontSize, this.color, this.textAlign})
-      : fontSize = fontSize ?? 14,
-        fontWeight = FontWeight.w400;
+  const BrandText.caption(
+    this.text, {
+    super.key,
+    double? fontSize,
+    FontWeight? fontWeight,
+    this.color,
+    this.textAlign,
+  })  : fontSize = fontSize ?? 14,
+        fontWeight = fontWeight ?? FontWeight.w400;
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:exup_energy_mobile/core/theme/app_theme.dart';
 import '../atoms/brand_text.dart';
 import 'package:exup_energy_mobile/features/auth/auth.dart';
 
@@ -23,11 +24,15 @@ class InputGroup extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BrandText.caption(label, color: Colors.black87),
-        const SizedBox(height: 8),
-        CustomTextField( // Usamos el átomo que ya creamos
+        // Ahora sí reconoce el fontWeight
+        BrandText.caption(
+          label, 
+          fontWeight: FontWeight.bold, 
+        ),
+        const SizedBox(height: AppTheme.paddingS),
+        CustomTextField(
           controller: controller,
-          label: '', // Dejamos vacío porque el label ya está arriba
+          label: '', 
           hint: hint,
           prefixIcon: icon,
           obscureText: obscureText,
