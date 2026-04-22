@@ -34,3 +34,5 @@ class RegisterSubmittedEvent extends AuthEvent {
 class LogoutRequested extends AuthEvent {
   const LogoutRequested();
 }
+
+class AppStarted extends AuthEvent {}
