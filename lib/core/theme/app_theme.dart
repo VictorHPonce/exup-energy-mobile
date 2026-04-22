@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Color principal de la marca ExUp
   static const Color _seedColor = Colors.blueAccent;
 
-  // Tema Claro
-  static ThemeData get lightTheme => ThemeData(
+  static ThemeData _base(Brightness brightness) => ThemeData(
         useMaterial3: true,
         colorSchemeSeed: _seedColor,
-        brightness: Brightness.light,
-        // Aquí puedes personalizar botones globalmente
+        brightness: brightness,
+        // Centralizamos el estilo de botones para no repetirlo en el átomo
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            elevation: 0,
+            minimumSize: const Size(double.infinity, 56),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            // Esto asegura que el botón use colores del esquema automáticamente
+            backgroundColor: brightness == Brightness.light 
+                ? _seedColor 
+                : Colors.blueAccent.withValues(alpha: 0.8),
+            foregroundColor: Colors.white,
           ),
         ),
       );
 
-  // Tema Oscuro
-  static ThemeData get darkTheme => ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: _seedColor,
-        brightness: Brightness.dark,
-        // Personalización para modo oscuro
+  static ThemeData get lightTheme => _base(Brightness.light);
+
+  static ThemeData get darkTheme => _base(Brightness.dark).copyWith(
         scaffoldBackgroundColor: const Color(0xFF121212),
       );
 }
