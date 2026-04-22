@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../core/widgets/atoms/brand_text.dart';
+import 'package:exup_energy_mobile/core/core.dart';
+import 'package:exup_energy_mobile/core/widgets/widgets.dart';
+
 
 class FuelPriceTag extends StatelessWidget {
   final String fuelName;
@@ -9,20 +11,25 @@ class FuelPriceTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(AppTheme.paddingS),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300),
+        color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(AppTheme.radiusS),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Column(
         children: [
-          BrandText.body(fuelName, fontSize: 10), // Usamos tu átomo
+          BrandText.body(fuelName, fontSize: 10, fontWeight: FontWeight.bold),
           const SizedBox(height: 4),
           Text(
             '${price.toStringAsFixed(3)}€',
-            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
+            style: TextStyle(
+              fontWeight: FontWeight.bold, 
+              color: colorScheme.primary,
+            ),
           ),
         ],
       ),
