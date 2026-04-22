@@ -9,6 +9,39 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.remoteDataSource});
 
   @override
+  Future<Either<Failure, void>> updateProfile(
+    String name,
+    int? fuelTypeId,
+  ) async {
+    try {
+      await remoteDataSource.updateProfile(name, fuelTypeId);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> addFavorite(int stationId) async {
+    try {
+      await remoteDataSource.addFavorite(stationId);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> removeFavorite(int stationId) async {
+    try {
+      await remoteDataSource.removeFavorite(stationId);
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, UserEntity>> getMe() async {
     try {
       final userModel = await remoteDataSource.getMe();

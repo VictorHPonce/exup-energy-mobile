@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final TextInputType keyboardType;
   final IconData? prefixIcon;
+  final FocusNode? focusNode;
 
   const CustomTextField({
     super.key,
@@ -17,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
     this.prefixIcon,
+    this.focusNode,
   });
 
   @override
@@ -40,6 +42,7 @@ class CustomTextField extends StatelessWidget {
         TextField(
           controller: controller,
           obscureText: obscureText,
+          focusNode: focusNode,
           keyboardType: keyboardType,
           style: TextStyle(color: colorScheme.onSurface),
           decoration: InputDecoration(
