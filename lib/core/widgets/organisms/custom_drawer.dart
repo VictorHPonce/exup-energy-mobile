@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:exup_energy_mobile/features/auth/auth.dart';
+import 'package:exup_energy_mobile/core/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
-import '../atoms/brand_text.dart';
-import '../molecules/drawer_item.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -32,8 +31,11 @@ class CustomDrawer extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // CABECERA MODERNA (Sin el header clásico)
-              _buildModernHeader(theme, name, email, isGuest),
+              CustomDrawerHeader(
+                name: name,
+                email: email,
+                isGuest: isGuest,
+              ),
 
               const SizedBox(height: 12),
 
@@ -84,44 +86,6 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildModernHeader(ThemeData theme, String name, String email, bool isGuest) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            theme.primaryColor,
-            theme.primaryColor.withBlue(200),
-          ],
-        ),
-        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(40)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 35,
-            backgroundColor: Colors.white.withValues(alpha: 0.2),
-            child: CircleAvatar(
-              radius: 32,
-              backgroundColor: Colors.white,
-              child: Icon(
-                isGuest ? Icons.person_outline : Icons.person,
-                size: 35,
-                color: theme.primaryColor,
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          BrandText.header(name, color: Colors.white),
-          BrandText.caption(email, color: Colors.white.withValues(alpha: 0.8)),
-        ],
-      ),
-    );
-  }
 
   Widget _buildSessionButton(BuildContext context, bool isGuest) {
     return DrawerItem(
