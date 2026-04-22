@@ -1,4 +1,5 @@
 import 'package:exup_energy_mobile/features/auth/auth.dart';
+import 'package:exup_energy_mobile/features/user/presentation/bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'injection_container.dart' as di;
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthBloc>(create: (_) => di.sl<AuthBloc>()..add(AppStarted())),
         BlocProvider<StationsBloc>(create: (_) => di.sl<StationsBloc>()),
+        BlocProvider<UserBloc>(create: (_) => di.sl<UserBloc>()),
       ],
       child: MaterialApp.router(
         routerConfig: appRouter,

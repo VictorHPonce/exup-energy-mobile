@@ -2,17 +2,26 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/user_entity.dart';
 
 abstract class AuthState extends Equatable {
+  const AuthState();
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-class AuthInitial extends AuthState {} // Estado por defecto
-class AuthLoading extends AuthState {} // Para mostrar el círculo de carga
-class AuthSuccess extends AuthState {  // Login correcto
+class AuthInitial extends AuthState {}
+class AuthLoading extends AuthState {}
+
+class AuthSuccess extends AuthState {
   final UserEntity user;
-  AuthSuccess(this.user);
+  const AuthSuccess(this.user);
+
+  @override
+  List<Object?> get props => [user];
 }
-class AuthError extends AuthState {    // Algo falló
+
+class AuthError extends AuthState {
   final String message;
-  AuthError(this.message);
+  const AuthError(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }

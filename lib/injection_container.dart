@@ -19,11 +19,13 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LocationService());
 
   //! 2. FEATURE - USER (La nueva pieza del puzzle)
+  sl.registerFactory(() => UserBloc(userRepository: sl()));
+  
   sl.registerLazySingleton<UserRemoteDataSource>(
     () => UserRemoteDataSourceImpl(dio: sl())
   );
   sl.registerLazySingleton<UserRepository>(
-    () => UserRepositoryImpl(remoteDataSource: sl()) // Verifica que este nombre coincida con el archivo .dart
+    () => UserRepositoryImpl(remoteDataSource: sl())
   );
   sl.registerLazySingleton(() => GetUserProfileUseCase(sl()));
 
