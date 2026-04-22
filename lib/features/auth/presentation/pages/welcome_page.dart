@@ -1,66 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:exup_energy_mobile/core/widgets/widgets.dart';
+import 'package:exup_energy_mobile/core/core.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.symmetric(horizontal: AppTheme.paddingL),
           child: Column(
             children: [
-              const Spacer(flex: 2), // Espacio flexible para empujar el logo
-              // Átomo: Icono (En el futuro será tu Logo en imagen)
-              const Icon(
+              const Spacer(flex: 2),
+              
+              Icon(
                 Icons.bolt_rounded,
                 size: 100,
-                color: Colors.blueAccent,
+                color: colorScheme.primary,
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: AppTheme.paddingL),
 
-              // Átomo: Texto de Marca (Header)
               const BrandText.header('ExUp Energy'),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: AppTheme.paddingS),
 
-              // Átomo: Texto de Marca (Body)
               const BrandText.body(
                 'Encuentra la mejor energía para tu camino',
                 textAlign: TextAlign.center,
               ),
 
-              const Spacer(
-                flex: 3,
-              ), // Más espacio en el centro para balance visual
-              // Átomo: Botón Primario (Acción Principal)
+              const Spacer(flex: 3),
+
               PrimaryButton(
                 text: 'Iniciar Sesión',
                 onPressed: () => context.push('/login'),
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: AppTheme.paddingM),
 
               TextButton(
                 onPressed: () => context.go('/home'),
-                child: const Text(
+                child: Text(
                   'Entrar como invitado',
                   style: TextStyle(
-                    color: Colors.blueAccent,
+                    color: colorScheme.primary,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                   ),
                 ),
               ),
 
-              const Spacer(), // Empuja el footer al final
-              // Molécula: Footer de registro
-              _buildFooter(context),
+              const Spacer(),
+              _buildFooter(context, colorScheme),
 
               const SizedBox(height: 20),
             ],
@@ -70,18 +67,17 @@ class WelcomePage extends StatelessWidget {
     );
   }
 
-  // Molécula interna: Solo se usa aquí, no necesita archivo aparte por ahora
-  Widget _buildFooter(BuildContext context) {
+  Widget _buildFooter(BuildContext context, ColorScheme colorScheme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const BrandText.caption('¿Eres nuevo? '),
         GestureDetector(
           onTap: () => context.push('/register'),
-          child: const Text(
+          child: Text(
             'Crea una cuenta aquí',
             style: TextStyle(
-              color: Colors.blueAccent,
+              color: colorScheme.primary,
               fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
