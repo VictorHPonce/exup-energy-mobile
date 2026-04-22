@@ -1,3 +1,4 @@
+import 'package:exup_energy_mobile/features/user/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:exup_energy_mobile/features/gas_stations/gas_stations.dart';
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const GasStationsPage(),
     const Center(child: Text('Pantalla de Carga (Próximamente)')),
-    const Center(child: Text('Perfil de Usuario')),
+    const ProfilePage(),
   ];
 
   @override

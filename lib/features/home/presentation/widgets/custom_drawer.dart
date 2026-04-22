@@ -53,12 +53,13 @@ class CustomDrawer extends StatelessWidget {
                       DrawerItem(
                         icon: Icons.favorite_rounded,
                         label: 'Mis Favoritos',
-                        onTap: () {},
+                        onTap: () {Navigator.pop(context);},
                       ),
                       DrawerItem(
                         icon: Icons.settings_rounded,
                         label: 'Ajustes',
-                        onTap: () {},
+                        onTap: () {Navigator.pop(context);},
+                        // TODO: // context.push('/settings');
                       ),
                     ],
                   ),
