@@ -26,6 +26,7 @@ class CustomDrawer extends StatelessWidget {
                 name: name,
                 email: email,
                 isGuest: isGuest,
+                imageUrl: (state is AuthSuccess) ? state.user.profilePictureUrl : null,
               ),
 
               const SizedBox(height: AppTheme.paddingM),

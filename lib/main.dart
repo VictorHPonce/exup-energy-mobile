@@ -1,3 +1,4 @@
+import 'package:exup_energy_mobile/core/core.dart';
 import 'package:exup_energy_mobile/features/auth/auth.dart';
 import 'package:exup_energy_mobile/features/user/presentation/bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
@@ -20,18 +21,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<ThemeCubit>(create: (_) => di.sl<ThemeCubit>()),
         BlocProvider<AuthBloc>(create: (_) => di.sl<AuthBloc>()..add(AppStarted())),
         BlocProvider<StationsBloc>(create: (_) => di.sl<StationsBloc>()),
         BlocProvider<UserBloc>(create: (_) => di.sl<UserBloc>()),
       ],
-      child: MaterialApp.router(
-        routerConfig: appRouter,
-        title: 'ExUp Energy',
-        debugShowCheckedModeBanner: false,
-        
-        themeMode: ThemeMode.system, 
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
+      // Usamos BlocBuilder para reconstruir MaterialApp cuando cambie el tema
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, themeMode) {
+          return MaterialApp.router(
+            routerConfig: appRouter,
+            title: 'ExUp Energy',
+            debugShowCheckedModeBanner: false,
+            themeMode: themeMode,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+          );
+        },
       ),
     );
   }

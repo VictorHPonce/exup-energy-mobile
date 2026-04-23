@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 abstract class UserEvent extends Equatable {
@@ -18,4 +20,12 @@ class ToggleFavoriteRequested extends UserEvent {
   final int stationId;
   final bool isFavorite;
   const ToggleFavoriteRequested({required this.stationId, required this.isFavorite});
+}
+
+class UpdateProfilePictureRequested extends UserEvent {
+  final File file;
+  const UpdateProfilePictureRequested(this.file);
+
+  @override
+  List<Object?> get props => [file];
 }

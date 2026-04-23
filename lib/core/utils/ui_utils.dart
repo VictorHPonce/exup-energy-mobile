@@ -105,4 +105,12 @@ class UiUtils {
       ),
     );
   }
+
+  static Widget sectionHeader(BuildContext context, String title) {
+  return BrandText.caption(
+    title.toUpperCase(),
+    fontWeight: FontWeight.bold,
+    color: Theme.of(context).colorScheme.primary,
+  );
+}
 }

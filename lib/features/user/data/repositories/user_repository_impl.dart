@@ -1,5 +1,6 @@
+import 'dart:io';
+import 'package:exup_energy_mobile/core/core.dart';
 import 'package:dartz/dartz.dart';
-import 'package:exup_energy_mobile/core/error/failures.dart';
 import 'package:exup_energy_mobile/features/auth/domain/entities/user_entity.dart';
 import 'package:exup_energy_mobile/features/user/user.dart';
 
@@ -46,6 +47,18 @@ class UserRepositoryImpl implements UserRepository {
     try {
       final userModel = await remoteDataSource.getMe();
       return Right(userModel);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> uploadProfilePicture(File imageFile) async {
+    try {
+      final imageUrl = await remoteDataSource.uploadProfilePicture(imageFile);
+      return Right(imageUrl);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

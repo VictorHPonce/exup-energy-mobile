@@ -9,6 +9,7 @@ class UserModel extends UserEntity {
     required super.email,
     required super.name,
     super.preferredFuelTypeId,
+    super.profilePictureUrl,
     this.token,
     this.refreshToken,
   });
@@ -19,6 +20,7 @@ class UserModel extends UserEntity {
       email: json['email'] ?? '',
       name: json['name'] ?? '',
       preferredFuelTypeId: json['preferredFuelTypeId'] as int?,
+      profilePictureUrl: json['profilePictureUrl'],
       token: json['token'],
       refreshToken: json['refreshToken'],
     );
@@ -31,6 +33,7 @@ class UserModel extends UserEntity {
       'email': email,
       'name': name,
       'preferredFuelTypeId': preferredFuelTypeId,
+      'profilePictureUrl': profilePictureUrl,
     };
   }
 }
