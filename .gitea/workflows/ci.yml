@@ -20,13 +20,11 @@ jobs:
 
       - name: Construir APK (Entorno Controlado)
         run: |
-          # Primero bajamos la imagen con reintentos si falla
-          docker pull ghcr.io/cirruslabs/flutter:stable || docker pull ghcr.io/cirruslabs/flutter:stable
+          docker pull ghcr.io/cirruslabs/flutter:stable || true
           
-          # Luego ejecutamos el build
           docker run --rm \
-            --memory="4g" \
-            --cpus="2" \
+            --memory="5g" \ 
+            --cpus="2.5" \ 
             -v $(pwd):/app \
             -w /app \
             ghcr.io/cirruslabs/flutter:stable \
