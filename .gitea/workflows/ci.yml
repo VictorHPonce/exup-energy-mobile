@@ -25,7 +25,6 @@ jobs:
         run: |
           docker pull ghcr.io/cirruslabs/flutter:stable || true
           
-          # Usamos la variable interna de Docker que Gitea mapea automáticamente
           docker run --rm \
             --memory="5g" \
             --cpus="2.5" \
@@ -34,11 +33,48 @@ jobs:
             ghcr.io/cirruslabs/flutter:stable \
             sh -c "flutter pub get && flutter build apk --release --dart-define=API_URL=${{ secrets.API_URL_PROD }}"
 
-      - name: Desplegar APK al Servidor de Descargas
+      # PASO 1: Mover el archivo (Es fundamental que el archivo esté antes que el contenedor)
+      # PASO 1: Mover el archivo
+      - name: Desplegar binario APK
         run: |
+          # Gitea crea la carpeta si no existe
           sudo mkdir -p ${{ env.DOWNLOADS_PATH }}
+          
+          # Copiamos la APK
           sudo cp build/app/outputs/flutter-apk/app-release.apk ${{ env.DOWNLOADS_PATH }}/${{ env.APK_FINAL_NAME }}
-          sudo chmod 644 ${{ env.DOWNLOADS_PATH }}/${{ env.APK_FINAL_NAME }}
+          
+          # AJUSTE DE PERMISOS:
+          # 1. Le damos la propiedad al usuario que corre Docker (normalmente ID 1000)
+          sudo chown -R 1000:1000 ${{ env.DOWNLOADS_PATH }}
+          # 2. Permisos de lectura para que Nginx no de "403 Forbidden"
+          sudo chmod -R 755 ${{ env.DOWNLOADS_PATH }}
+
+      # PASO 2: Levantar el servidor que Traefik va a escuchar
+      - name: Configurar Servidor de Descargas (Traefik + Nginx)
+        run: |
+          sudo tee ${{ env.DOWNLOADS_PATH }}/docker-compose.yml > /dev/null <<EOF
+          services:
+            downloads-server:
+              image: nginx:alpine
+              container_name: downloads_app
+              restart: always
+              networks:
+                - web
+              volumes:
+                - .:/usr/share/nginx/html:ro
+              labels:
+                - "traefik.enable=true"
+                - "traefik.http.routers.downloads-app.rule=Host(\`${{ secrets.DOMAIN_URL_DOWNLOADS }}\`)"
+                - "traefik.http.routers.downloads-app.entrypoints=websecure"
+                - "traefik.http.routers.downloads-app.tls.certresolver=letsencrypt"
+                - "traefik.docker.network=web"
+          networks:
+            web:
+              external: true
+          EOF
+
+          cd ${{ env.DOWNLOADS_PATH }}
+          sudo docker compose up -d
 
       - name: Sync Mirror a GitHub
         if: success() && secrets.ENABLE_MIRROR != 'false'
@@ -66,10 +102,7 @@ jobs:
       - name: Notificar Error a Telegram
         if: failure()
         run: |
-          MESSAGE="⚠️ *FALLO EN BUILD MOBILE: ${{ secrets.IMAGE_NAME_MOBILE }}*%0A%0A"
-          MESSAGE+="El proceso de compilación de la APK ha fallado. Revisa los logs en Gitea."
-          
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
           -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
           -d parse_mode="Markdown" \
-          -d text="$MESSAGE"
+          -d text="⚠️ *FALLO EN BUILD MOBILE: ${{ secrets.IMAGE_NAME_MOBILE }}*%0A%0AEl proceso de compilación ha fallado."
