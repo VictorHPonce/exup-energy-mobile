@@ -68,7 +68,7 @@ class ProfilePage extends StatelessWidget {
                           icon: Icons.favorite_border_rounded,
                           title: "Mis Gasolineras Favoritas",
                           subtitle: "Acceso rápido a tus ahorros",
-                          onTap: () {},
+                          onTap: () => UiUtils.showFeatureNotAvailable(context),
                         ),
 
                         const SizedBox(height: AppTheme.paddingL),
@@ -78,7 +78,7 @@ class ProfilePage extends StatelessWidget {
                         ProfileOptionTile(
                           icon: Icons.notifications_none_rounded,
                           title: "Notificaciones",
-                          onTap: () {},
+                          onTap: () => UiUtils.showFeatureNotAvailable(context),
                         ),
 
                         ProfileOptionTile(

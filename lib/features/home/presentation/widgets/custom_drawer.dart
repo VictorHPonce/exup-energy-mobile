@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:exup_energy_mobile/features/auth/auth.dart';
 import 'package:exup_energy_mobile/core/widgets/widgets.dart';
-import 'package:exup_energy_mobile/core/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:exup_energy_mobile/core/core.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,6 @@ class CustomDrawer extends StatelessWidget {
         final bool isGuest = state is! AuthSuccess;
 
         return Drawer(
-          // No hace falta poner backgroundColor ni shape, ya están en el AppTheme!
           child: Column(
             children: [
               CustomDrawerHeader(
@@ -46,7 +46,7 @@ class CustomDrawer extends StatelessWidget {
                       DrawerItem(
                         icon: Icons.map_rounded,
                         label: 'Mapa de Estaciones',
-                        onTap: () {},
+                        onTap: () => UiUtils.showFeatureNotAvailable(context),
                       ),
                       
                       const SizedBox(height: AppTheme.paddingL),
@@ -54,12 +54,12 @@ class CustomDrawer extends StatelessWidget {
                       DrawerItem(
                         icon: Icons.favorite_rounded,
                         label: 'Mis Favoritos',
-                        onTap: () {Navigator.pop(context);},
+                        onTap: () => UiUtils.showFeatureNotAvailable(context),
                       ),
                       DrawerItem(
                         icon: Icons.settings_rounded,
                         label: 'Ajustes',
-                        onTap: () {Navigator.pop(context);},
+                        onTap: () => UiUtils.showFeatureNotAvailable(context),
                         // TODO: // context.push('/settings');
                       ),
                     ],

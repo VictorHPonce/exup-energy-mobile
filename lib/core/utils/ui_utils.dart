@@ -6,31 +6,51 @@ import 'dart:io';
 
 class UiUtils {
   static void showSnackBar(
-    BuildContext context,
-    String message, {
-    bool isError = false,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
+  BuildContext context,
+  String message, {
+  bool isError = false,
+}) {
+  final colorScheme = Theme.of(context).colorScheme;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: TextStyle(
-            color: colorScheme.onInverseSurface,
-            fontWeight: FontWeight.w500,
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Row(
+        children: [
+          Icon(
+            isError ? Icons.error_outline : Icons.info_outline,
+            color: isError ? colorScheme.onErrorContainer : colorScheme.onSecondaryContainer,
+            size: 20,
           ),
-        ),
-        backgroundColor: isError ? colorScheme.error : colorScheme.secondary,
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(AppTheme.paddingM),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppTheme.radiusM),
-        ),
-        duration: const Duration(seconds: 3),
+          const SizedBox(width: AppTheme.paddingS),
+          Expanded(
+            child: Text(
+              message,
+              style: TextStyle(
+                color: isError ? colorScheme.onErrorContainer : colorScheme.onSecondaryContainer,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
       ),
-    );
-  }
+      backgroundColor: isError 
+          ? colorScheme.errorContainer 
+          : colorScheme.secondaryContainer,
+      behavior: SnackBarBehavior.floating,
+      elevation: 0, // Sin sombra pesada para un look flat y limpio
+      margin: const EdgeInsets.all(AppTheme.paddingM),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppTheme.radiusM),
+        side: BorderSide( // Un borde sutil para dar calidad
+          color: isError ? colorScheme.error : colorScheme.secondary.withValues(alpha: 0.2),
+          width: 1,
+        ),
+      ),
+      duration: const Duration(seconds: 3),
+    ),
+  );
+}
 
   static Future<void> openNavigationMap(double lat, double lon) async {
     Uri uri;
@@ -107,10 +127,24 @@ class UiUtils {
   }
 
   static Widget sectionHeader(BuildContext context, String title) {
-  return BrandText.caption(
-    title.toUpperCase(),
-    fontWeight: FontWeight.bold,
-    color: Theme.of(context).colorScheme.primary,
-  );
-}
+    return BrandText.caption(
+      title.toUpperCase(),
+      fontWeight: FontWeight.bold,
+      color: Theme.of(context).colorScheme.primary,
+    );
+  }
+
+  // Funcion de utilidad para mostrar un mensaje de "Funcionalidad no disponible"
+  static void showFeatureNotAvailable(BuildContext context) {
+
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    }
+
+    showSnackBar(
+      context,
+      "Esta funcionalidad estará disponible en la versión 1.1.0",
+      isError: false,
+    );
+  }
 }

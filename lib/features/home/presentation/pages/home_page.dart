@@ -1,3 +1,4 @@
+import 'package:exup_energy_mobile/core/widgets/molecules/feature_placeholder.dart';
 import 'package:exup_energy_mobile/features/user/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,10 +16,14 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const GasStationsPage(),
-    const Center(child: Text('Pantalla de Carga (Próximamente)')),
-    const ProfilePage(),
-  ];
+  const GasStationsPage(),
+  const FeaturePlaceholder(
+    title: 'Cargadores Eléctricos',
+    subtitle: 'Estamos mapeando los puntos de carga ultra-rápida para tu próximo viaje.',
+    icon: Icons.electric_car_rounded,
+  ),
+  const ProfilePage(),
+];
 
   @override
   Widget build(BuildContext context) {

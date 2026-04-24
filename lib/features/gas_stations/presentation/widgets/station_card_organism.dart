@@ -15,6 +15,7 @@ class StationCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Card(
+      margin: const EdgeInsets.only(bottom: AppTheme.paddingS),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppTheme.radiusM),
@@ -23,10 +24,19 @@ class StationCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // --- CABECERA ---
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(child: BrandText.header(station.name, fontSize: 18)),
+                  Expanded(
+                    child: BrandText.header(
+                      station.name, 
+                      fontSize: 18,
+                      overflow: TextOverflow.ellipsis, 
+                    )
+                  ),
+                  const SizedBox(width: AppTheme.paddingS),
                   BrandText.caption(
                     _formatDistance(station.distance),
                     fontWeight: FontWeight.bold,
@@ -35,17 +45,38 @@ class StationCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 4),
-              BrandText.body(station.address, fontSize: 13),
+              
+              // --- DIRECCIÓN ---
+              BrandText.body(
+                station.address, 
+                fontSize: 13, 
+                color: Colors.grey[600],
+              ),
               const SizedBox(height: AppTheme.paddingM),
               
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: station.prices.map((p) => Padding(
-                    padding: const EdgeInsets.only(right: AppTheme.paddingS),
-                    child: FuelPriceTag(fuelName: p.fuelName, price: p.price),
-                  )).toList(),
-                ),
+              // --- PRECIOS Y NAVEGACIÓN ---
+              Row(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      child: Row(
+                        children: station.prices.map((p) => Padding(
+                          padding: const EdgeInsets.only(right: AppTheme.paddingS),
+                          child: FuelPriceTag(fuelName: p.fuelName, price: p.price),
+                        )).toList(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: AppTheme.paddingS),
+                  
+                  // BOTÓN DE NAVEGACIÓN USANDO UIUTILS
+                  _NavigationAction(
+                    lat: station.latitude,
+                    lon: station.longitude,
+                  ),
+                ],
               ),
             ],
           ),
@@ -57,5 +88,32 @@ class StationCard extends StatelessWidget {
   String _formatDistance(double distanceInKm) {
     if (distanceInKm < 1) return '${(distanceInKm * 1000).toStringAsFixed(0)} m';
     return '${distanceInKm.toStringAsFixed(1)} km';
+  }
+}
+
+class _NavigationAction extends StatelessWidget {
+  final double lat;
+  final double lon;
+
+  const _NavigationAction({required this.lat, required this.lon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.4),
+        borderRadius: BorderRadius.circular(AppTheme.radiusS),
+      ),
+      child: IconButton(
+        visualDensity: VisualDensity.compact,
+        icon: Icon(
+          Icons.directions_outlined, 
+          color: Theme.of(context).colorScheme.primary,
+          size: 20,
+        ),
+        onPressed: () => UiUtils.openNavigationMap(lat, lon),
+        tooltip: 'Cómo llegar',
+      ),
+    );
   }
 }

@@ -59,7 +59,6 @@ class _GasStationsPageState extends State<GasStationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // El fondo del Scaffold ahora es dinámico gracias al AppTheme
       body: BlocBuilder<StationsBloc, StationsState>(
         builder: (context, state) {
           if (state is StationsLoading) {
@@ -108,7 +107,6 @@ class _GasStationsPageState extends State<GasStationsPage> {
   }
 }
 
-// Widget privado para mejorar la legibilidad y mantenimiento (Clean Code)
 class _ErrorView extends StatelessWidget {
   final String message;
   const _ErrorView({required this.message});

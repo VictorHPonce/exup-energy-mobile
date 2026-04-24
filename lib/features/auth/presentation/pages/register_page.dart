@@ -39,12 +39,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Al no definir backgroundColors, Flutter usa el 'surface' del tema
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Transparente para ver el fondo del Scaffold
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        // iconTheme se hereda del tema principal, no hace falta forzarlo a negro
       ),
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -58,7 +56,6 @@ class _RegisterPageState extends State<RegisterPage> {
         },
         builder: (context, state) {
           return SingleChildScrollView(
-            // Padding tokenizado (AppTheme.paddingL = 24 o 30 según definas)
             padding: const EdgeInsets.symmetric(horizontal: AppTheme.paddingL),
             child: Column(
               children: [

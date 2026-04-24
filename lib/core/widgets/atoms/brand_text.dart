@@ -6,6 +6,7 @@ class BrandText extends StatelessWidget {
   final FontWeight fontWeight;
   final Color? color;
   final TextAlign? textAlign;
+  final TextOverflow? overflow;
 
   const BrandText.header(
     this.text, {
@@ -14,6 +15,8 @@ class BrandText extends StatelessWidget {
     FontWeight? fontWeight,
     this.color,
     this.textAlign,
+    this.overflow,
+
   })  : fontSize = fontSize ?? 32,
         fontWeight = fontWeight ?? FontWeight.bold;
 
@@ -24,6 +27,7 @@ class BrandText extends StatelessWidget {
     FontWeight? fontWeight,
     this.color,
     this.textAlign,
+    this.overflow,
   })  : fontSize = fontSize ?? 16,
         fontWeight = fontWeight ?? FontWeight.normal;
 
@@ -34,6 +38,7 @@ class BrandText extends StatelessWidget {
     FontWeight? fontWeight,
     this.color,
     this.textAlign,
+    this.overflow,
   })  : fontSize = fontSize ?? 14,
         fontWeight = fontWeight ?? FontWeight.w400;
 

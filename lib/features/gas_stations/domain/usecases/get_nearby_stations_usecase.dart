@@ -8,12 +8,11 @@ class GetNearbyStationsUseCase {
   final StationRepository repository;
   GetNearbyStationsUseCase(this.repository);
 
-  // Cambiamos List<StationEntity> por PaginationModel<StationEntity>
   Future<Either<Failure, PaginationModel<StationEntity>>> execute({
     required double lat,
     required double lon,
     double radius = 5.0,
-    int page = 1, // Añadimos el parámetro de página
+    int page = 1,
   }) async {
     return await repository.getNearbyStations(
       latitude: lat,

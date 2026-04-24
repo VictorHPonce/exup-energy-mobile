@@ -36,7 +36,6 @@ class StationRepositoryImpl implements StationRepository {
         page: page,
       );
 
-      // Dart permite esto porque StationModel extiende StationEntity
       return Right(remotePagination);
     } catch (e) {
       return Left(ServerFailure(e.toString()));

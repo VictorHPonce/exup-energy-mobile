@@ -7,6 +7,12 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Necesitamos acceso a tu galería para que elijas una foto de perfil.</string>
 
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+    <string>googlechromes</string>
+    <string>comgooglemaps</string>
+	</array>
+
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -19,7 +25,7 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
-	<key>CFBundleName</key>
+	<key>ExUp Energy</key>
 	<string>exup_energy_mobile</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>

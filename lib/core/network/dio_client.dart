@@ -5,8 +5,14 @@ import 'package:exup_energy_mobile/features/auth/data/datasources/auth_local_dat
 import 'auth_interceptor.dart';
 
 Dio getDio(AuthLocalDataSource authLocalDataSource) {
+
+  const String baseUrl = String.fromEnvironment(
+    'API_URL', 
+    defaultValue: 'https://placeholder-api.com/api', 
+  );
+  
   Dio dio = Dio(BaseOptions(
-    baseUrl: 'https://192.168.1.130:7161/api', 
+    baseUrl: baseUrl,
     connectTimeout: const Duration(seconds: 10),
     receiveTimeout: const Duration(seconds: 10),
     contentType: 'application/json',
