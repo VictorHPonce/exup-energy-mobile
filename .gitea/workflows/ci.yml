@@ -25,7 +25,7 @@ jobs:
           docker run --rm \
             --memory="5g" \
             --cpus="2.5" \
-            -v .:/app \
+            -v "${{ gitea.workspace }}:/app" \
             -w /app \
             ghcr.io/cirruslabs/flutter:stable \
             sh -c "flutter pub get && flutter build apk --release --dart-define=API_URL=${{ secrets.API_URL_PROD }}"
