@@ -25,14 +25,14 @@ jobs:
         run: |
           docker pull ghcr.io/cirruslabs/flutter:stable || true
           
-          # Forzamos el montaje del directorio actual al root de /app en el contenedor
+          # Usamos la variable interna de Docker que Gitea mapea automáticamente
           docker run --rm \
             --memory="5g" \
             --cpus="2.5" \
-            -v "$(pwd):/app" \
-            -w /app \
+            --volumes-from $(hostname) \
+            -w "$GITHUB_WORKSPACE" \
             ghcr.io/cirruslabs/flutter:stable \
-            sh -c "ls -la && flutter pub get && flutter build apk --release --dart-define=API_URL=${{ secrets.API_URL_PROD }}"
+            sh -c "flutter pub get && flutter build apk --release --dart-define=API_URL=${{ secrets.API_URL_PROD }}"
 
       - name: Desplegar APK al Servidor de Descargas
         run: |
