@@ -37,17 +37,29 @@ jobs:
       # PASO 1: Mover el archivo
       - name: Desplegar binario APK
         run: |
-          # Gitea crea la carpeta si no existe
+          # 1. Aseguramos que la carpeta exista (ya vimos que funciona)
           sudo mkdir -p ${{ env.DOWNLOADS_PATH }}
           
-          # Copiamos la APK
-          sudo cp build/app/outputs/flutter-apk/app-release.apk ${{ env.DOWNLOADS_PATH }}/${{ env.APK_FINAL_NAME }}
+          # 2. BUSCAMOS LA APK (No importa dónde esté escondida)
+          # Buscamos el archivo y tomamos la primera coincidencia
+          APK_SOURCE=$(find . -name "app-release.apk" | head -n 1)
           
-          # AJUSTE DE PERMISOS:
-          # 1. Le damos la propiedad al usuario que corre Docker (normalmente ID 1000)
+          if [ -z "$APK_SOURCE" ]; then
+            echo "❌ ERROR: No se encontró el archivo app-release.apk en el workspace."
+            exit 1
+          fi
+          
+          echo "✅ Archivo encontrado en: $APK_SOURCE"
+          
+          # 3. Copiamos al destino final
+          sudo cp "$APK_SOURCE" ${{ env.DOWNLOADS_PATH }}/${{ env.APK_FINAL_NAME }}
+          
+          # 4. Ajustamos permisos para que Nginx pueda leerlo
           sudo chown -R 1000:1000 ${{ env.DOWNLOADS_PATH }}
-          # 2. Permisos de lectura para que Nginx no de "403 Forbidden"
-          sudo chmod -R 755 ${{ env.DOWNLOADS_PATH }}
+          sudo chmod 644 ${{ env.DOWNLOADS_PATH }}/${{ env.APK_FINAL_NAME }}
+          
+          echo "🚀 Despliegue completado en ${{ env.DOWNLOADS_PATH }}"
+          ls -lh ${{ env.DOWNLOADS_PATH }}
 
       # PASO 2: Levantar el servidor que Traefik va a escuchar
       - name: Configurar Servidor de Descargas (Traefik + Nginx)
