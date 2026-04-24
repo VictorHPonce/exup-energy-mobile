@@ -23,8 +23,8 @@ jobs:
           docker pull ghcr.io/cirruslabs/flutter:stable || true
           
           docker run --rm \
-            --memory="5g" \ 
-            --cpus="2.5" \ 
+            --memory="5g" \
+            --cpus="2.5" \
             -v $(pwd):/app \
             -w /app \
             ghcr.io/cirruslabs/flutter:stable \
