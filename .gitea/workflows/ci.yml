@@ -25,15 +25,12 @@ jobs:
         run: |
           docker pull ghcr.io/cirruslabs/flutter:stable || true
           
-          # Imprimimos la ruta para estar 100% seguros de qué ve el runner
-          echo "El workspace es: ${{ gitea.workspace }}"
-          ls -R ${{ gitea.workspace }} # Esto nos dirá si el código está ahí
-          
+          # Usamos la variable de Gitea para entrar directamente a la subcarpeta del proyecto
           docker run --rm \
             --memory="5g" \
             --cpus="2.5" \
-            -v "/$GITHUB_WORKSPACE:/app" \
-            -w /app \
+            -v "${{ gitea.workspace }}:/app" \
+            -w "/app" \
             ghcr.io/cirruslabs/flutter:stable \
             sh -c "flutter pub get && flutter build apk --release --dart-define=API_URL=${{ secrets.API_URL_PROD }}"
 
